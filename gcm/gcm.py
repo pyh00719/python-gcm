@@ -58,8 +58,8 @@ def group_response(response, registration_ids, key):
 class GCM(object):
 
     # Timeunit is milliseconds.
-    BACKOFF_INITIAL_DELAY = 1000;
-    MAX_BACKOFF_DELAY = 1024000;
+    BACKOFF_INITIAL_DELAY = 1000
+    MAX_BACKOFF_DELAY = 1024000
 
     def __init__(self, api_key):
         self.api_key = api_key
@@ -243,6 +243,7 @@ class GCM(object):
 
         attempt = 0
         backoff = self.BACKOFF_INITIAL_DELAY
+        info = None
         for attempt in range(retries):
             payload = self.construct_payload(
                 registration_ids, data, collapse_key,
@@ -260,5 +261,4 @@ class GCM(object):
                     backoff *= 2
             else:
                 break
-
         return info
