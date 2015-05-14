@@ -106,7 +106,6 @@ class GCM(object):
 
         if is_json:
             payload = json.dumps(payload)
-
         return payload
 
     def make_request(self, data, is_json=True):
@@ -128,8 +127,10 @@ class GCM(object):
 
         if not is_json:
             data = urlencode(data)
+        data = data.encode('utf-8')
         req = urllib2.Request(GCM_URL, data, headers)
 
+        response = None
         try:
             response = urllib2.urlopen(req).read()
         except urllib2.HTTPError as e:
@@ -143,7 +144,7 @@ class GCM(object):
             raise GCMConnectionException("There was an internal error in the GCM server while trying to process the request")
 
         if is_json:
-            response = json.loads(response)
+            response = json.loads(response.decode("utf-8"))
         return response
 
     def raise_error(self, error):
@@ -240,7 +241,6 @@ class GCM(object):
             raise GCMMissingRegistrationException("Missing registration_ids")
         if len(registration_ids) > 1000:
             raise GCMTooManyRegIdsException("Exceded number of registration_ids")
-
         attempt = 0
         backoff = self.BACKOFF_INITIAL_DELAY
         info = None
