@@ -79,9 +79,11 @@ class GCM(object):
                 payload['data'] = data
         else:
             payload = {'registration_id': registration_ids}
-            if data:
-                for k in data.keys():
-                    data['data.%s' % k] = data.pop(k)
+            origin = data
+            data = dict()
+            if origin:
+                for k in origin.keys():
+                    data['data.%s' % k] = origin.get(k)
                 payload.update(data)
 
         if delay_while_idle:
@@ -118,7 +120,7 @@ class GCM(object):
             headers['Content-Type'] = 'application/json'
 
         if not is_json:
-            data = urllib.urlencode(data)
+            data = urlencode(data)
         req = urllib2.Request(GCM_URL, data, headers)
 
         try:
