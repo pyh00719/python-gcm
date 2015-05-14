@@ -1,5 +1,12 @@
-import urllib
-import urllib2
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
+try:
+    import urllib.request as urllib2
+
+except ImportError:
+    import urllib2
 import json
 from collections import defaultdict
 import time
